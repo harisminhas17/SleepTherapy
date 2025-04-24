@@ -1,0 +1,145 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\SleepRecommendation;
+use App\Models\SleepingTip;
+use App\Models\MeditationSound;
+use App\Models\SleepChallenge;
+use App\Models\UserChallenge;
+use App\Models\Journal;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class SleepingController extends Controller
+{
+
+    public function getSleepRecommendations()
+    {
+        $recommendations = SleepRecommendation::select('icon_source as iconSource', 'title')->get();
+
+        return response()->json($recommendations);
+    }
+
+
+    public function getSleepingTips()
+    {
+        $tips = SleepingTip::select('icon_source as iconSource', 'title', 'description')->get();
+
+        return response()->json($tips);
+    }
+
+    public function getMeditationSounds()
+    {
+        $sounds = MeditationSound::select('id', 'title', 'icon', 'duration')->get();
+
+        return response()->json($sounds);
+    }
+    public function getMeditationSound($id)
+    {
+        $sound = MeditationSound::select('title', 'icon', 'duration', 'src', 'description')
+            ->findOrFail($id);
+
+        return response()->json($sound);
+    }
+
+    public function getAllSleepChallenges()
+    {
+        $challenges = SleepChallenge::select('title', 'iconSrc as icon_src', 'description')->get();
+
+        return response()->json($challenges);
+    }
+
+    public function getSleepQualityChallenges()
+    {
+        $challenges = SleepChallenge::where('type', 'sleep_quality')
+            ->select('title', 'iconSrc as icon_src', 'description')
+            ->get();
+
+        return response()->json($challenges);
+    }
+
+    public function getMySleepChallenges()
+    {
+        $user = Auth::user();
+
+        $myChallenges = UserChallenge::with(['challenge'])
+            ->where('userId', $user->id)
+            ->get()
+            ->map(function ($userChallenge) {
+                return [
+                    'id' => $userChallenge->id,
+                    'title' => $userChallenge->challenge->title,
+                    'icon_src' => $userChallenge->challenge->iconSrc,
+                    'description' => $userChallenge->challenge->description,
+                    'total_days' => $userChallenge->challenge->totalDays,
+                    'completed_days' => $userChallenge->completedDays
+                ];
+            });
+
+        return response()->json($myChallenges);
+    }
+
+
+    public function getSleepChallenge($id)
+    {
+        $user = Auth::user();
+
+        // Find the challenge first
+        $challenge = SleepChallenge::findOrFail($id);
+
+        // Check if user has started this challenge
+        $userChallenge = UserChallenge::where('userId', $user->id)
+            ->where('challengeId', $id)
+            ->first();
+
+        $response = [
+            'title' => $challenge->title,
+            'icon_src' => $challenge->iconSrc,
+            'description' => $challenge->description,
+            'benefits_why' => $challenge->benefitsWhy,
+            'benefits_results' => $challenge->benefitsResults,
+            'total_days' => $challenge->totalDays,
+            'completed_days' => $userChallenge ? $userChallenge->completedDays : 0,
+            'is_started' => $userChallenge ? $userChallenge->isStarted : false
+        ];
+
+        return response()->json($response);
+    }
+
+    public function postJournal(Request $request)
+    {
+        $request->validate([
+            'mood' => 'required|string',
+            'sleep_quality' => 'required|string',
+            'notes' => 'required|string',
+        ]);
+
+        $user = Auth::user();
+
+        $journal = new Journal();
+        $journal->userId = $user->id;
+        $journal->mood = $request->mood;
+        $journal->sleepQuality = $request->sleep_quality;
+        $journal->notes = $request->notes;
+        $journal->save();
+
+        return response()->json(['message' => 'Journal entry created successfully', 'journal' => $journal]);
+    }
+    public function getJournalSummary()
+    {
+
+        $summaries = [
+            [
+                'description' => 'Your sleep quality has improved by 20% in the last week.',
+                'icon' => 'improvement-icon.png'
+            ],
+            [
+                'description' => 'You tend to sleep better on days when you exercise.',
+                'icon' => 'exercise-icon.png'
+            ],
+        ];
+
+        return response()->json($summaries);
+    }
+}

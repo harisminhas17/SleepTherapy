@@ -1,0 +1,137 @@
+generator client {
+    provider = "prisma-client-js"
+    output   = "../app/generated/prisma"
+}
+
+datasource db {
+    provider     = "mysql"
+    url          = env("DATABASE_URL")
+    relationMode = "foreignKeys"
+}
+
+model User {
+    id                  Int                    @id @default(autoincrement())
+    email               String                 @unique
+    password            String
+    age                 Int
+    api_token           String?
+    gender              String
+    sleepRoutine        String?
+    bedTime             String?
+    wakeUpTime          String?
+    difficultySleeping  Boolean?
+    wakeUpRested        Boolean?
+    workingHours        String?
+    dailyCommutingHours Float?
+    travelFrequently    Boolean?
+    isBedroomNoisy      Boolean?
+    isBedroomDark       Boolean?
+    useElectronics      Boolean?
+    stressedRegularly   Boolean?
+    alcoholOrCaffeine   Boolean?
+    exerciseRegularly   Boolean?
+    sleepingDisorders   UserSleepingDisorder[]
+    journals            Journal[]
+    challenges          UserChallenge[]
+    alarms              Alarm[]
+    createdAt           DateTime               @default(now())
+    updatedAt           DateTime               @updatedAt
+}
+
+model SleepingDisorder {
+    id    Int                    @id @default(autoincrement())
+    name  String                 @unique
+    users UserSleepingDisorder[]
+}
+
+model UserSleepingDisorder {
+    id               Int              @id @default(autoincrement())
+    user             User             @relation(fields: [userId], references: [id])
+    userId           Int
+    sleepingDisorder SleepingDisorder @relation(fields: [disorderId], references: [id])
+    disorderId       Int
+
+    @@unique([userId, disorderId])
+}
+
+model SleepRecommendation {
+    id         Int    @id @default(autoincrement())
+    iconSource String
+    title      String
+}
+
+model SleepingTip {
+    id          Int    @id @default(autoincrement())
+    iconSource  String
+    title       String
+    description String @db.Text
+}
+
+model MeditationSound {
+    id          Int    @id @default(autoincrement())
+    title       String
+    icon        String
+    duration    String
+    src         String
+    description String @db.Text
+}
+
+model Journal {
+    id           Int      @id @default(autoincrement())
+    user         User     @relation(fields: [userId], references: [id])
+    userId       Int
+    mood         String
+    sleepQuality String
+    notes        String   @db.Text
+    createdAt    DateTime @default(now())
+}
+
+model JournalSummary {
+    id          Int    @id @default(autoincrement())
+    description String @db.Text
+    icon        String
+}
+
+model SleepChallenge {
+    id              Int             @id @default(autoincrement())
+    title           String
+    iconSrc         String
+    description     String          @db.Text
+    benefitsWhy     String          @db.Text
+    benefitsResults String          @db.Text
+    totalDays       Int
+    type            String // 'general' or 'sleep_quality'
+    users           UserChallenge[]
+}
+
+model UserChallenge {
+    id            Int            @id @default(autoincrement())
+    user          User           @relation(fields: [userId], references: [id])
+    userId        Int
+    challenge     SleepChallenge @relation(fields: [challengeId], references: [id])
+    challengeId   Int
+    completedDays Int            @default(0)
+    isStarted     Boolean        @default(false)
+    startDate     DateTime?
+    lastUpdated   DateTime       @default(now())
+
+    @@unique([userId, challengeId])
+}
+
+model Alarm {
+    id              Int      @id @default(autoincrement())
+    user            User     @relation(fields: [userId], references: [id])
+    userId          Int
+    time            String
+    date            String?
+    timezone        String   @default("UTC")
+    repeatDays      String?  @db.Text // JSON string of days
+    label           String?
+    sound           String?
+    vibration       Boolean  @default(true)
+    volume          Int      @default(70)
+    wakeUpChallenge Boolean  @default(false)
+    isActive        Boolean  @default(true)
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+}

@@ -1,0 +1,446 @@
+{
+	"info": {
+		"_postman_id": "your-collection-id",
+		"name": "Sleep Routine API",
+		"description": "API collection for Sleep Routine application",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"password123\",\n    \"age\": 25,\n    \"gender\": \"male\",\n    \"sleepRoutine\": \"regular\",\n    \"bedTime\": \"22:00\",\n    \"wakeUpTime\": \"06:00\",\n    \"difficultySleeping\": false,\n    \"wakeUpRested\": true,\n    \"workingHours\": \"9-5\",\n    \"dailyCommutingHours\": 1.5,\n    \"travelFrequently\": false,\n    \"isBedroomNoisy\": false,\n    \"isBedroomDark\": true,\n    \"useElectronics\": true,\n    \"stressedRegularly\": false,\n    \"alcoholOrCaffeine\": false,\n    \"exerciseRegularly\": true,\n    \"sleepingDisorders\": [1, 2]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/register",
+							"host": ["{{base_url}}"],
+							"path": ["api", "register"]
+						}
+					}
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "login"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Sleep Recommendations",
+			"item": [
+				{
+					"name": "Get Sleep Recommendations",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/sleep-recommendations",
+							"host": ["{{base_url}}"],
+							"path": ["api", "sleep-recommendations"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Sleeping Tips",
+			"item": [
+				{
+					"name": "Get Sleeping Tips",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/sleeping-tips",
+							"host": ["{{base_url}}"],
+							"path": ["api", "sleeping-tips"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Meditation Sounds",
+			"item": [
+				{
+					"name": "Get All Meditation Sounds",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/meditation-sounds",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meditation-sounds"]
+						}
+					}
+				},
+				{
+					"name": "Get Meditation Sound by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/meditation-sound/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meditation-sound", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Journals",
+			"item": [
+				{
+					"name": "Post Journal Entry",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mood\": \"happy\",\n    \"sleep_quality\": \"good\",\n    \"notes\": \"Slept well last night\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/post-journal",
+							"host": ["{{base_url}}"],
+							"path": ["api", "post-journal"]
+						}
+					}
+				},
+				{
+					"name": "Get Journal Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/journal-summary",
+							"host": ["{{base_url}}"],
+							"path": ["api", "journal-summary"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Sleep Challenges",
+			"item": [
+				{
+					"name": "Get All Sleep Challenges",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/all-sleep-challenges",
+							"host": ["{{base_url}}"],
+							"path": ["api", "all-sleep-challenges"]
+						}
+					}
+				},
+				{
+					"name": "Get Sleep Quality Challenges",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/sleep-quality-challenges",
+							"host": ["{{base_url}}"],
+							"path": ["api", "sleep-quality-challenges"]
+						}
+					}
+				},
+				{
+					"name": "Get My Sleep Challenges",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/my-sleep-challenges",
+							"host": ["{{base_url}}"],
+							"path": ["api", "my-sleep-challenges"]
+						}
+					}
+				},
+				{
+					"name": "Get Sleep Challenge by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/sleep-challenge/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "sleep-challenge", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Alarms",
+			"item": [
+				{
+					"name": "Get All Alarms",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/get-alarms",
+							"host": ["{{base_url}}"],
+							"path": ["api", "get-alarms"]
+						}
+					}
+				},
+				{
+					"name": "Create Alarm",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"time\": \"06:00\",\n    \"date\": \"2024-03-20\",\n    \"timezone\": \"UTC\",\n    \"repeat\": {\n        \"days\": [\"monday\", \"wednesday\", \"friday\"]\n    },\n    \"label\": \"Morning Alarm\",\n    \"sound\": \"bell.mp3\",\n    \"vibration\": true,\n    \"volume\": 80,\n    \"wake_up_challenge\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/set-alarm",
+							"host": ["{{base_url}}"],
+							"path": ["api", "set-alarm"]
+						}
+					}
+				},
+				{
+					"name": "Get Alarm by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/alarm/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "alarm", "1"]
+						}
+					}
+				},
+				{
+					"name": "Update Alarm",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"time\": \"07:00\",\n    \"volume\": 90,\n    \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/alarm/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "alarm", "1"]
+						}
+					}
+				},
+				{
+					"name": "Delete Alarm",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/alarm/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "alarm", "1"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost/SleepRoutine/public",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "your-auth-token",
+			"type": "string"
+		}
+	]
+}
