@@ -15,7 +15,7 @@ class Alarm extends Model
      *
      * @var list<string>
      */
-   protected $table = 'alarm';
+   protected $table = 'Alarm';
    protected $guarded = [];
 
     /**

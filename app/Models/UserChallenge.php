@@ -16,7 +16,7 @@ class UserChallenge extends Model
      * @var list<string>
      */
 
-    protected $table = 'user_challenge';
+    protected $table = 'UserChallenge';
     protected $guarded = [];
 
 

@@ -15,7 +15,7 @@ class SleepingDisorder extends Model
      *
      * @var list<string>
      */
-  protected $table = 'sleeping_disorder';
+  protected $table = 'SleepingDisorder';
   protected $guarded = [];
 
     /**

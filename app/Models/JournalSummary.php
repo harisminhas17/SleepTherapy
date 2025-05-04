@@ -14,6 +14,6 @@ class JournalSummary extends Model
      *
      * @var list<string>
      */
-   protected $table = 'journal_summary';
+   protected $table = 'JournalSummary';
    protected $guarded = [];
 }

@@ -15,7 +15,7 @@ class SleepChallenge extends Model
      *
      * @var list<string>
      */
-   protected $table = 'sleep_challenge';
+   protected $table = 'SleepChallenge';
    protected $guarded = [];
 
     /**

@@ -14,6 +14,6 @@ class SleepingTip extends Model
      *
      * @var list<string>
      */
-   protected $table = 'sleeping_tip';
+   protected $table = 'SleepingTip';
    protected $guarded = [];
 }

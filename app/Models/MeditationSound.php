@@ -14,6 +14,6 @@ class MeditationSound extends Model
      *
      * @var list<string>
      */
-    protected $table = 'meditation_sound';
+    protected $table = 'MeditationSound';
     protected $guarded = [];
 }

@@ -14,6 +14,6 @@ class SleepRecommendation extends Model
      *
      * @var list<string>
      */
-   protected $table = 'sleep_recommendation';
+   protected $table = 'SleepRecommendation';
    protected $guarded = [];
 }

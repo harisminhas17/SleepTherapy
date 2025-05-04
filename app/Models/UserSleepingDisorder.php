@@ -10,7 +10,7 @@ class UserSleepingDisorder extends Model
 {
     use HasFactory;
     
-    protected $table = 'user_sleeping_disorder';
+    protected $table = 'UserSleepingDisorder';
     protected $guarded = [];
 
     /**

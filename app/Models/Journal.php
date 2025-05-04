@@ -15,7 +15,7 @@ class Journal extends Model
      *
      * @var list<string>
      */
-   protected $table = 'journal';
+   protected $table = 'Journal';
    protected $guarded = [];
 
     public function user(): BelongsTo
