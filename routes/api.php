@@ -1,17 +1,20 @@
 <?php
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SleepingController;
 use App\Http\Controllers\AlarmController;
+use Illuminate\Support\Facades\Route;
+
+Route::post('register', [UserController::class, 'register']); //working
+Route::post('login', [UserController::class, 'login']); //working
+Route::post('checkEmail', [UserController::class, 'checkEmail']); //working
 
 
-Route::post('register', [UserController::class, 'register']);
-Route::post('login', [UserController::class, 'login']);
-
-// Protected routes
 Route::middleware('auth:sanctum')->group(function () {
+
+    //Auth routes
+
 
     // Sleep recommendations
     Route::get('/sleep-recommendations', [SleepingController::class, 'getSleepRecommendations']);

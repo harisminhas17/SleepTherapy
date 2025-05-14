@@ -15,25 +15,26 @@ class UserController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required',
+            'email' => 'required|email',
             'password' => 'required',
             'age' => 'required',
-            'gender' => 'required',
-            // 'sleep_routine' => 'required|string',
-            // 'bed_time' => 'required|string',
-            // 'wake_up_time' => 'required|string',
-            // 'difficulty_sleeping' => 'required',
-            // 'wake_up_rested' => 'required',
-            // 'working_hours' => 'required',
-            // 'daily_commuting_hours' => 'required',
-            // 'travel_frequently' => 'required',
-            // 'is_bedroom_noisy' => 'required',
-            // 'is_bedroom_dark' => 'required',
-            // 'use_electronics' => 'required',
-            // 'stressed_regularly' => 'required',
-            // 'alcohol_or_caffeine' => 'required',
-            // 'sleeping_disorders' => 'nullable',
-            // 'exercise_regularly' => 'required',
+            'gender' => 'required|in:male,female,other',
+            'identify_as' => 'required|in:night_owl,early_bird',
+            'bed_time' => 'required|date_format:g:ia',
+            'wake_up_time' => 'required|date_format:g:ia',
+            "difficulty_sleeping" => "nullable",
+            "wake_up_rested" => "nullable",
+            "working_hours" => "nullable",
+            "daily_commuting_hours" => "nullable",
+            "travel_frequently" => "nullable",
+            "is_bedroom_noisy" => "nullable",
+            "is_bedroom_dark" => "nullable",
+            "use_electronics" => "nullable",
+            "wake_up_feeling" => "nullable",
+            "feel_stressed" => "nullable",
+            "consumption" => "nullable",
+            "exercise_regularly" => "nullable",
+            "sleep_disorders" => "nullable",
         ]);
 
         if ($validator->fails()) {
@@ -45,7 +46,9 @@ class UserController extends Controller
             $user = User::where('email', $request->email)->first();
 
             if ($user) {
-                return response()->json(['message' => 'User already exists'], 200);
+                return response()->json([
+                    'error' => true,
+                    'message' => 'User already exists'], 200);
             }
         }
 
@@ -54,42 +57,31 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'age' => $request->age,
             'gender' => $request->gender,
-            'createdAt' => now(),
-            'updatedAt' => now(),
-            // 'sleepRoutine' => $request->sleep_routine,
-            // 'bedTime' => $request->bed_time,
-            // 'wakeUpTime' => $request->wake_up_time,
-            // 'difficultySleeping' => $request->difficulty_sleeping,
-            // 'wakeUpRested' => $request->wake_up_rested,
-            // 'workingHours' => $request->working_hours,
-            // 'dailyCommutingHours' => $request->daily_commuting_hours,
-            // 'travelFrequently' => $request->travel_frequently,
-            // 'isBedroomNoisy' => $request->is_bedroom_noisy,
-            // 'isBedroomDark' => $request->is_bedroom_dark,
-            // 'useElectronics' => $request->use_electronics,
-            // 'stressedRegularly' => $request->stressed_regularly,
-            // 'alcoholOrCaffeine' => $request->alcohol_or_caffeine,
-            // 'exerciseRegularly' => $request->exercise_regularly,
+            'identify_as' => $request->identify_as,
+            'bed_time' => $request->bed_time,
+            'wake_up_time' => $request->wake_up_time,
+            'difficulty_sleeping' => $request->difficulty_sleeping,
+            'wake_up_rested' => $request->wake_up_rested,
+            'working_hours' => $request->working_hours,
+            'daily_commuting_hours' => $request->daily_commuting_hours,
+            'travel_frequently' => $request->travel_frequently,
+            'is_bedroom_noisy' => $request->is_bedroom_noisy,
+            'is_bedroom_dark' => $request->is_bedroom_dark,
+            'use_electronics' => $request->use_electronics,
+            'wake_up_feeling' => $request->wake_up_feeling,
+            'feel_stressed' => $request->feel_stressed,
+            'consumption' => $request->consumption,
+            'exercise_regularly' => $request->exercise_regularly,
+            'sleep_disorders' => $request->sleep_disorders,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
-
-        // // Process sleeping disorders if provided
-        // if ($request->has('sleeping_disorders') && is_array($request->sleeping_disorders)) {
-        //     foreach ($request->sleeping_disorders as $disorderName) {
-        //         // Find or create the sleeping disorder
-        //         $disorder = \App\Models\SleepingDisorder::firstOrCreate(['name' => $disorderName]);
-
-        //         // Associate the disorder with the user
-        //         UserSleepingDisorder::create([
-        //             'userId' => $user->id,
-        //             'disorderId' => $disorder->id
-        //         ]);
-        //     }
-        // }
 
         // Create token for the user
         $token = $user->createToken('auth_token');
 
         return response()->json([
+            'error' => false,
             'message' => 'User registered successfully',
             'records' => $user,
             'token' => $token
@@ -113,6 +105,7 @@ class UserController extends Controller
         // Check password
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
+                'error' => true,
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
@@ -121,9 +114,33 @@ class UserController extends Controller
         $token = $user->createToken('auth_token');
 
         return response()->json([
+            'error' => false,
             'message' => 'Login successful',
             'user' => $user,
             'token' => $token
         ]);
+    }
+
+    public function checkEmail(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 200);
+        }
+
+        $user = User::where('email', $request->email)->first();
+
+        if ($user) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Email already exists'], 200);
+        }
+
+        return response()->json([
+            'error' => false,
+            'message' => 'Email is available'], 200);
     }
 }

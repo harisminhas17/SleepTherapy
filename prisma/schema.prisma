@@ -10,32 +10,35 @@ datasource db {
 }
 
 model User {
-    id                  Int                    @id @default(autoincrement())
-    email               String                 @unique
-    password            String
-    age                 Int
-    api_token           String?
-    gender              String
-    sleepRoutine        String?
-    bedTime             String?
-    wakeUpTime          String?
-    difficultySleeping  Boolean?
-    wakeUpRested        Boolean?
-    workingHours        String?
-    dailyCommutingHours Float?
-    travelFrequently    Boolean?
-    isBedroomNoisy      Boolean?
-    isBedroomDark       Boolean?
-    useElectronics      Boolean?
-    stressedRegularly   Boolean?
-    alcoholOrCaffeine   Boolean?
-    exerciseRegularly   Boolean?
-    sleepingDisorders   UserSleepingDisorder[]
-    journals            Journal[]
-    challenges          UserChallenge[]
-    alarms              Alarm[]
-    createdAt           DateTime               @default(now())
-    updatedAt           DateTime               @updatedAt
+    id                    Int      @id @default(autoincrement())
+    email                 String   @unique
+    password              String
+    age                   Int
+    api_token             String?
+    gender                String
+    identify_as           String?
+    bed_time              String?
+    wake_up_time          String?
+    difficulty_sleeping   String?
+    wake_up_rested        String?
+    working_hours         String?
+    daily_commuting_hours Int?
+    travel_frequently     String?
+    is_bedroom_noisy      String?
+    is_bedroom_dark       String?
+    use_electronics       String?
+    wake_up_feeling       String?
+    feel_stressed         String?
+    consumption           String?
+    exercise_regularly    String?
+    sleep_disorders       String?
+    created_at            DateTime @default(now())
+    updated_at            DateTime @updatedAt
+
+    sleepingDisorders UserSleepingDisorder[]
+    journals          Journal[]
+    challenges        UserChallenge[]
+    alarms            Alarm[]
 }
 
 model SleepingDisorder {
