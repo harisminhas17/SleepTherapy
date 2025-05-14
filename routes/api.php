@@ -13,8 +13,8 @@ Route::post('checkEmail', [UserController::class, 'checkEmail']); //working
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    //Auth routes
-
+    //Summary
+    Route::get('getUserSummary', [UserController::class, 'getUserSummary']);
 
     // Sleep recommendations
     Route::get('/sleep-recommendations', [SleepingController::class, 'getSleepRecommendations']);

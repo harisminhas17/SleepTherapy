@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\UserSleepingDisorder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -48,7 +49,8 @@ class UserController extends Controller
             if ($user) {
                 return response()->json([
                     'error' => true,
-                    'message' => 'User already exists'], 200);
+                    'message' => 'User already exists'
+                ], 200);
             }
         }
 
@@ -111,12 +113,12 @@ class UserController extends Controller
         }
 
         // Create new token
-        $token = $user->createToken('auth_token');
+        $token = $user->createToken('SleepRoutine')->plainTextToken;
 
         return response()->json([
             'error' => false,
             'message' => 'Login successful',
-            'user' => $user,
+            'records' => $user,
             'token' => $token
         ]);
     }
@@ -136,11 +138,40 @@ class UserController extends Controller
         if ($user) {
             return response()->json([
                 'error' => true,
-                'message' => 'Email already exists'], 200);
+                'message' => 'Email already exists'
+            ], 200);
         }
 
         return response()->json([
             'error' => false,
-            'message' => 'Email is available'], 200);
+            'message' => 'Email is available'
+        ], 200);
+    }
+
+    public function getUserSummary()
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json([
+                'error' => true,
+                'message' => 'User not found'
+            ], 200);
+        }
+
+        $user_summary = User::where('id', $user->id)->first();
+
+        if (!$user_summary) {
+            return response()->json([
+                'error' => true,
+                'message' => 'User summary not found'
+            ], 200);
+        }
+
+        return response()->json([
+            'error' => false,
+            'message' => 'User summary retrieved successfully',
+            'records' => $user_summary
+        ], 200);
     }
 }

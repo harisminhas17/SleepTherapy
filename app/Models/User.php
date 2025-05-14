@@ -7,12 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
-
+use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The table associated with the model.
@@ -43,23 +42,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'api_token',
     ];
-
-    /**
-     * Create a new API token for the user.
-     *
-     * @return string
-     */
-    public function createToken($name)
-    {
-        $token = Str::random(60);
-
-        $this->api_token = $token;
-        $this->save();
-
-        return $token;
-    }
 
     /**
      * Get the sleeping disorders associated with the user.
