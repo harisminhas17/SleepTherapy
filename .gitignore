@@ -23,3 +23,7 @@ yarn-error.log
 /.vscode
 /.zed
 bootstrap/cache/.gitignore
+media/images/*
+media/audios/*
+media/podcasts/*
+media/attach_files/*

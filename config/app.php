@@ -53,6 +53,11 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+    'asset_url' => env('ASSET_URL'),
+    'upload_image_url' => 'media/images',
+    'upload_audio_url' => 'media/audios',
+    'upload_podcast_url' => 'media/podcasts',
+    'upload_attach_file_url' => 'media/attach_files',
 
     /*
     |--------------------------------------------------------------------------

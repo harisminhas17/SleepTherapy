@@ -12,26 +12,28 @@ datasource db {
 model User {
     id                    Int      @id @default(autoincrement())
     email                 String   @unique
-    password              String
-    age                   Int
-    api_token             String?
-    gender                String
-    identify_as           String?
-    bed_time              String?
-    wake_up_time          String?
-    difficulty_sleeping   String?
-    wake_up_rested        String?
-    working_hours         String?
-    daily_commuting_hours Int?
-    travel_frequently     String?
-    is_bedroom_noisy      String?
-    is_bedroom_dark       String?
-    use_electronics       String?
-    wake_up_feeling       String?
-    feel_stressed         String?
-    consumption           String?
-    exercise_regularly    String?
-    sleep_disorders       String?
+    name                  String?  @db.VarChar(255)
+    password              String   @db.VarChar(255)
+    age                   Int      @db.Int
+    api_token             String?  @db.VarChar(255)
+    image                 String?  @db.VarChar(255)
+    gender                String   @db.VarChar(255)
+    identify_as           String?  @db.VarChar(255)
+    bed_time              String?  @db.VarChar(255)
+    wake_up_time          String?  @db.VarChar(255)
+    difficulty_sleeping   String?  @db.VarChar(255)
+    wake_up_rested        String?  @db.VarChar(255)
+    working_hours         String?  @db.VarChar(255)
+    daily_commuting_hours Int?     @db.Int
+    travel_frequently     String?  @db.VarChar(255)
+    is_bedroom_noisy      String?  @db.VarChar(255)
+    is_bedroom_dark       String?  @db.VarChar(255)
+    use_electronics       String?  @db.VarChar(255)
+    wake_up_feeling       String?  @db.VarChar(255)
+    feel_stressed         String?  @db.VarChar(255)
+    consumption           String?  @db.VarChar(255)
+    exercise_regularly    String?  @db.VarChar(255)
+    sleep_disorders       String?  @db.VarChar(255)
     created_at            DateTime @default(now())
     updated_at            DateTime @updatedAt
 
@@ -40,7 +42,6 @@ model User {
     challenges        UserChallenge[]
     alarms            Alarm[]
 }
-
 model SleepingDisorder {
     id    Int                    @id @default(autoincrement())
     name  String                 @unique
@@ -138,3 +139,20 @@ model Alarm {
     createdAt       DateTime @default(now())
     updatedAt       DateTime @updatedAt
 }
+
+model PersonalAccessToken {
+    id            Int       @id @default(autoincrement())
+    tokenableType String    @map("tokenable_type")
+    tokenableId   Int       @map("tokenable_id")
+    name          String
+    token         String    @unique @db.VarChar(64)
+    abilities     String?   @db.Text
+    lastUsedAt    DateTime? @map("last_used_at")
+    expiresAt     DateTime? @map("expires_at")
+    createdAt     DateTime  @default(now()) @map("created_at")
+    updatedAt     DateTime  @updatedAt @map("updated_at")
+
+    @@index([tokenableType, tokenableId])
+    @@map("personal_access_tokens")
+}
+

@@ -17,7 +17,8 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required',
+            'password' => 'required|min:6',
+            'name' => 'required',
             'age' => 'required',
             'gender' => 'required|in:male,female,other',
             'identify_as' => 'required|in:night_owl,early_bird',
@@ -57,6 +58,7 @@ class UserController extends Controller
         $user = User::create([
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'name' => $request->name,
             'age' => $request->age,
             'gender' => $request->gender,
             'identify_as' => $request->identify_as,
@@ -172,6 +174,58 @@ class UserController extends Controller
             'error' => false,
             'message' => 'User summary retrieved successfully',
             'records' => $user_summary
+        ], 200);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json([
+                'error' => true,
+                'message' => 'User not found'
+            ], 200);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'age' => 'nullable',
+            'gender' => 'nullable|in:male,female,other',
+            'image' => 'nullable',
+            'email' => 'nullable',
+            'password' => 'nullable|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 200);
+        }
+
+        $data = $request->all();
+
+        // Handle password update securely
+        if (isset($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $imageName = time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $imagePath = config('app.upload_image_url');
+            $file->move(base_path($imagePath), $imageName);
+            $data['image'] = $imageName;
+        }
+
+        // Update user
+        User::where('id', $user->id)->update($data);
+
+        // Get updated user
+        $updatedUser = User::find($user->id);
+
+        return response()->json([
+            'error' => false,
+            'message' => 'Profile updated successfully',
+            'records' => $updatedUser
         ], 200);
     }
 }

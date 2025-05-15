@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SleepingController;
 use App\Http\Controllers\AlarmController;
@@ -13,8 +12,9 @@ Route::post('checkEmail', [UserController::class, 'checkEmail']); //working
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    //Summary
-    Route::get('getUserSummary', [UserController::class, 'getUserSummary']);
+    //User
+    Route::get('getUserSummary', [UserController::class, 'getUserSummary']); //working
+    Route::post('updateProfile', [UserController::class, 'updateProfile']); //working
 
     // Sleep recommendations
     Route::get('/sleep-recommendations', [SleepingController::class, 'getSleepRecommendations']);
