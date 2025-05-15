@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\UserSleepingDisorder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -226,6 +225,35 @@ class UserController extends Controller
             'error' => false,
             'message' => 'Profile updated successfully',
             'records' => $updatedUser
+        ], 200);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'current_password' => 'required',
+            'new_password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation failed', $validator->errors(), 200);
+        }
+
+        $authUser = Auth::user();
+
+        if (!Hash::check($request->current_password, $authUser->password)) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Current password is incorrect.'
+            ]);
+        }
+
+        User::where('id', $authUser->id)
+            ->update(['password' => Hash::make($request->new_password)]);
+
+        return response()->json([
+            'error' => false,
+            'message' => 'Password updated successfully.'
         ], 200);
     }
 }

@@ -16,7 +16,8 @@ Route::middleware('auth:sanctum')->group(function () {
     //User
     Route::get('getUserSummary', [UserController::class, 'getUserSummary']); //working
     Route::post('updateProfile', [UserController::class, 'updateProfile']); //working
-
+    Route::put('changePassword', [UserController::class, 'changePassword']); //working
+    
     // Journal
     Route::post('postJournal', [JournalController::class, 'postJournal']); //working
     Route::get('getJournalSummary', [JournalController::class, 'getJournalSummary']); //working
