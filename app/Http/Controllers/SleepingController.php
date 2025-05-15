@@ -107,39 +107,5 @@ class SleepingController extends Controller
         return response()->json($response);
     }
 
-    public function postJournal(Request $request)
-    {
-        $request->validate([
-            'mood' => 'required|string',
-            'sleep_quality' => 'required|string',
-            'notes' => 'required|string',
-        ]);
 
-        $user = Auth::user();
-
-        $journal = new Journal();
-        $journal->userId = $user->id;
-        $journal->mood = $request->mood;
-        $journal->sleepQuality = $request->sleep_quality;
-        $journal->notes = $request->notes;
-        $journal->save();
-
-        return response()->json(['message' => 'Journal entry created successfully', 'journal' => $journal]);
-    }
-    public function getJournalSummary()
-    {
-
-        $summaries = [
-            [
-                'description' => 'Your sleep quality has improved by 20% in the last week.',
-                'icon' => 'improvement-icon.png'
-            ],
-            [
-                'description' => 'You tend to sleep better on days when you exercise.',
-                'icon' => 'exercise-icon.png'
-            ],
-        ];
-
-        return response()->json($summaries);
-    }
 }
