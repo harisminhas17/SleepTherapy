@@ -35,7 +35,7 @@ model User {
     exercise_regularly    String?  @db.VarChar(255)
     sleep_disorders       String?  @db.VarChar(255)
     created_at            DateTime @default(now())
-    updated_at            DateTime @updatedAt
+    updated_at            DateTime @updatedAt @default(now())
 
     sleepingDisorders UserSleepingDisorder[]
     journals          Journal[]
