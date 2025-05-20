@@ -192,12 +192,26 @@ class UserController extends Controller
             'age' => 'nullable',
             'gender' => 'nullable|in:male,female,other',
             'image' => 'nullable',
-            'email' => 'nullable',
+            'email' => 'nullable|email',
             'password' => 'nullable|min:6',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 200);
+        }
+
+        // Check if email is already in use by another user
+        if ($request->has('email') && $request->email !== $user->email) {
+            $existingUser = User::where('email', $request->email)
+                ->where('id', '!=', $user->id)
+                ->first();
+
+            if ($existingUser) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'This email is already in use'
+                ], 200);
+            }
         }
 
         $data = $request->all();
