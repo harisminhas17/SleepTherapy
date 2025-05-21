@@ -29,20 +29,6 @@ class SleepingController extends Controller
         return response()->json($tips);
     }
 
-    public function getMeditationSounds()
-    {
-        $sounds = MeditationSound::select('id', 'title', 'icon', 'duration')->get();
-
-        return response()->json($sounds);
-    }
-    public function getMeditationSound($id)
-    {
-        $sound = MeditationSound::select('title', 'icon', 'duration', 'src', 'description')
-            ->findOrFail($id);
-
-        return response()->json($sound);
-    }
-
     public function getAllSleepChallenges()
     {
         $challenges = SleepChallenge::select('title', 'iconSrc as icon_src', 'description')->get();

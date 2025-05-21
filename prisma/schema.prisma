@@ -9,6 +9,25 @@ datasource db {
     relationMode = "foreignKeys"
 }
 
+model UserSleepData {
+    id                  Int      @id @default(autoincrement())
+    user_id             Int
+    sleep_date          DateTime @db.DateTime
+    sleep_start         DateTime @db.DateTime
+    sleep_end           DateTime @db.DateTime
+    total_sleep_minutes Int      @db.Int
+    deep_sleep_minutes  Int      @db.Int
+    sleep_quality       Int      @default(0)
+    sleep_percentage    Int      @default(0)
+    remaining_minutes   Int      @default(0)
+
+    created_at DateTime  @default(now())
+    updated_at DateTime  @updatedAt
+    deleted_at DateTime?
+
+    user User @relation(fields: [user_id], references: [id])
+}
+
 model User {
     id                    Int      @id @default(autoincrement())
     email                 String   @unique
@@ -35,13 +54,14 @@ model User {
     exercise_regularly    String?  @db.VarChar(255)
     sleep_disorders       String?  @db.VarChar(255)
     created_at            DateTime @default(now())
-    updated_at            DateTime @updatedAt @default(now())
+    updated_at            DateTime @default(now()) @updatedAt
 
     sleepingDisorders UserSleepingDisorder[]
     journals          Journal[]
     challenges        UserChallenge[]
     alarms            Alarm[]
     notifications     Notifications[]
+    userSleepData     UserSleepData[]
 }
 
 model SleepingDisorder {
@@ -73,13 +93,23 @@ model SleepingTip {
     description String @db.Text
 }
 
-model MeditationSound {
-    id          Int    @id @default(autoincrement())
-    title       String
-    icon        String
-    duration    String
-    src         String
-    description String @db.Text
+model Meditation {
+    id          Int            @id @default(autoincrement())
+    title       String         @db.VarChar(255)
+    type        MeditationType
+    description String?        @db.Text
+    image       String?        @db.VarChar(255)
+    audio       String?        @db.VarChar(255)
+    duration    Int?           @db.Int
+    created_at  DateTime       @default(now())
+    updated_at  DateTime       @updatedAt
+}
+
+enum MeditationType {
+    MEDITATION
+    SLEEP_STORY
+    BREATHING_EXERCISE
+    AMBIENT_SOUND
 }
 
 model Journal {
