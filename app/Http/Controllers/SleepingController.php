@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SleepData;
 use App\Models\SleepRecommendation;
 use App\Models\SleepingTip;
 use App\Models\MeditationSound;
@@ -93,5 +94,23 @@ class SleepingController extends Controller
         return response()->json($response);
     }
 
+    public function getUserSleepData()
+    {
+        $user = Auth::user();
 
+        $sleepData = SleepData::where('user_id', $user->id)->get();
+
+        if ($sleepData->isEmpty()) {
+            return response()->json([
+                'error' => true,
+                'message' => 'No sleep data found',
+            ], 200);
+        }
+
+        return response()->json([
+            'error' => false,
+            'message' => 'Sleep data fetched successfully',
+            'records' => $sleepData
+        ], 200);
+    }
 }

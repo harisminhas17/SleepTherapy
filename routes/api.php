@@ -37,8 +37,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Sleep Data
 
-    Route::get('getSleepData', [SleepingController::class, 'getSleepData']); //working
-    
+    Route::get('getUserSleepData', [SleepingController::class, 'getUserSleepData']); //working
+
     // Sleep recommendations
     Route::get('/sleep-recommendations', [SleepingController::class, 'getSleepRecommendations']);
 
