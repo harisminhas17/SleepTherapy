@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Meditation extends Model
 {
-    protected $table = 'meditation';
+    protected $table = 'Meditation';
     protected $guarded = [];
+    
 }
