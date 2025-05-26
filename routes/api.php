@@ -1,15 +1,19 @@
 <?php
 
 use App\Http\Controllers\MeditationController;
+use App\Http\Controllers\PackageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SleepingController;
 use App\Http\Controllers\AlarmController;
 use App\Http\Controllers\JournalController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('register', [UserController::class, 'register']); //working
 Route::post('login', [UserController::class, 'login']); //working
 Route::post('checkEmail', [UserController::class, 'checkEmail']); //working
+Route::get('getPackages', [PackageController::class, 'getPackages']); //working
+Route::get('getPaymentMethods', [PaymentController::class, 'getPaymentMethods']); //working
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -18,6 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('getUserSummary', [UserController::class, 'getUserSummary']); //working
     Route::post('updateProfile', [UserController::class, 'updateProfile']); //working
     Route::put('changePassword', [UserController::class, 'changePassword']); //working
+    Route::post('updateNotificationToken', [UserController::class, 'updateNotificationToken']); //working
 
     // Journal
     Route::post('postJournal', [JournalController::class, 'postJournal']); //working
@@ -38,6 +43,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Sleep Data
 
     Route::get('getUserSleepData', [SleepingController::class, 'getUserSleepData']); //working
+
+    // Packages
 
     // Sleep recommendations
     Route::get('/sleep-recommendations', [SleepingController::class, 'getSleepRecommendations']);

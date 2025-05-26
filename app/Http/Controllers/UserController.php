@@ -36,6 +36,7 @@ class UserController extends Controller
             "consumption" => "nullable",
             "exercise_regularly" => "nullable",
             "sleep_disorders" => "nullable",
+            "package_id" => "nullable",
         ]);
 
         if ($validator->fails()) {
@@ -76,6 +77,7 @@ class UserController extends Controller
             'consumption' => $request->consumption,
             'exercise_regularly' => $request->exercise_regularly,
             'sleep_disorders' => $request->sleep_disorders,
+            'package_id' => $request->package_id,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -253,6 +255,33 @@ class UserController extends Controller
         return response()->json([
             'error' => false,
             'message' => 'Password updated successfully.'
+        ], 200);
+    }
+
+    public function updateNotificationToken(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json([
+                'error' => true,
+                'message' => 'User not found'
+            ], 200);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'notification_token' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 200);
+        }
+
+        User::where('id', $user->id)->update(['notification_token' => $request->notification_token]);
+
+        return response()->json([
+            'error' => false,
+            'message' => 'Notification token updated successfully'
         ], 200);
     }
 }

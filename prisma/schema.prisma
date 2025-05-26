@@ -53,15 +53,20 @@ model User {
     consumption           String?  @db.VarChar(255)
     exercise_regularly    String?  @db.VarChar(255)
     sleep_disorders       String?  @db.VarChar(255)
+    notification_token    String?  @db.VarChar(255)
+    package_id            Int?     @db.Int
+    package               Package? @relation(fields: [package_id], references: [id])
     created_at            DateTime @default(now())
     updated_at            DateTime @default(now()) @updatedAt
 
-    sleepingDisorders UserSleepingDisorder[]
-    journals          Journal[]
-    challenges        UserChallenge[]
-    alarms            Alarm[]
-    notifications     Notifications[]
-    userSleepData     UserSleepData[]
+    sleepingDisorders   UserSleepingDisorder[]
+    journals            Journal[]
+    challenges          UserChallenge[]
+    alarms              Alarm[]
+    notifications       Notifications[]
+    userSleepData       UserSleepData[]
+    packageSubScription PackageSubScription[]
+    Payment             Payment[]
 }
 
 model SleepingDisorder {
@@ -215,4 +220,64 @@ model PersonalAccessToken {
 
     @@index([tokenableType, tokenableId])
     @@map("personal_access_tokens")
+}
+
+model Package {
+    id          Int      @id @default(autoincrement())
+    name        String
+    description String?
+    price       Int
+    duration    Int?
+    is_active   Int      @default(1)
+    created_at  DateTime @default(now())
+    updated_at  DateTime @updatedAt
+
+    users               User[]
+    packageSubScription PackageSubScription[]
+    Payment             Payment[]
+}
+
+model PackageSubScription {
+    id         Int      @id @default(autoincrement())
+    user_id    Int
+    package_id Int
+    start_date DateTime
+    end_date   DateTime
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    user    User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    package Package @relation(fields: [package_id], references: [id], onDelete: Cascade)
+}
+
+model Payment {
+    id                Int           @id @default(autoincrement())
+    payment_method_id Int
+    user_id           Int
+    package_id        Int?
+    amount            Int
+    status            PaymentStatus
+    payment_token     String?
+    created_at        DateTime      @default(now())
+    updated_at        DateTime      @updatedAt
+
+    user          User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    package       Package?       @relation(fields: [package_id], references: [id], onDelete: Cascade)
+    paymentMethod PaymentMethod? @relation(fields: [payment_method_id], references: [id])
+}
+
+enum PaymentStatus {
+    PENDING
+    SUCCESS
+    FAILED
+}
+
+model PaymentMethod {
+    id         Int      @id @default(autoincrement())
+    name       String
+    is_active  Int      @default(1)
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    Payment Payment[]
 }
