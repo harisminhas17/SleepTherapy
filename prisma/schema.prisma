@@ -223,14 +223,15 @@ model PersonalAccessToken {
 }
 
 model Package {
-    id          Int      @id @default(autoincrement())
-    name        String
-    description String?
-    price       Int
-    duration    Int?
-    is_active   Int      @default(1)
-    created_at  DateTime @default(now())
-    updated_at  DateTime @updatedAt
+    id           Int      @id @default(autoincrement())
+    name         String
+    description  String?
+    price        Int
+    duration     Int?
+    is_active    Int      @default(1)
+    key_features String?  @db.Text
+    created_at   DateTime @default(now())
+    updated_at   DateTime @updatedAt
 
     users               User[]
     packageSubScription PackageSubScription[]

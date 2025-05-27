@@ -19,6 +19,7 @@ class PackageSeeder extends Seeder
                 'price' => 9.99,
                 'duration' => 30, // 30 days
                 'is_active' => 1,
+                'key_features' => 'Essential sleep tracking and basic features',
             ],
             [
                 'name' => 'Pro',
@@ -26,6 +27,7 @@ class PackageSeeder extends Seeder
                 'price' => 19.99,
                 'duration' => 30, // 30 days
                 'is_active' => 1,
+                'key_features' => 'Advanced sleep analytics and premium features',
             ],
             [
                 'name' => 'Premium',
@@ -33,6 +35,7 @@ class PackageSeeder extends Seeder
                 'price' => 29.99,
                 'duration' => 30, // 30 days
                 'is_active' => 1,
+                'key_features' => 'Complete sleep solution with all features and priority support',
             ],
         ];
 
