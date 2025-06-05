@@ -54,7 +54,7 @@ class MeditationController extends Controller
             if ($request->hasFile('image')) {
                 $file = $request->file('image');
                 $imageName = time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
-                $imagePath = config('app.upload_image_url');
+                $imagePath = base_path('media/images');
                 $file->move(base_path($imagePath), $imageName);
                 $imagePath = $imageName;
             }
@@ -64,7 +64,7 @@ class MeditationController extends Controller
             if ($request->hasFile('audio')) {
                 $audio = $request->file('audio');
                 $audioName = time() . '_' . uniqid() . '.' . $audio->getClientOriginalExtension();
-                $audioPath = config('app.upload_audio_url');
+                $audioPath = base_path('media/audios');
                 $audio->move(base_path($audioPath), $audioName);
                 $audioPath = $audioName;
             }
