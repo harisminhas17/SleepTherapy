@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -211,8 +212,8 @@ class UserController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $imageName = time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $imagePath = config('app.upload_image_url');
-            $file->move(base_path($imagePath), $imageName);
+            $imagePath = base_path('media/images');
+            $file->move($imagePath, $imageName);
             $data['image'] = $imageName;
         }
 
