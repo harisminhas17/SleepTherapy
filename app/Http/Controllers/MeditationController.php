@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Meditation;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class MeditationController extends Controller
 {
@@ -41,11 +40,6 @@ class MeditationController extends Controller
     public function addMeditation(Request $request)
     {
         try {
-            // Debug paths
-            Log::info('Base path: ' . base_path());
-            Log::info('Media path: ' . base_path('media'));
-            Log::info('Images path: ' . base_path('media/images'));
-            Log::info('Audios path: ' . base_path('media/audios'));
 
             $request->validate([
                 'title' => 'required',
@@ -99,7 +93,7 @@ class MeditationController extends Controller
                 'error' => false,
                 'message' => 'Meditation added successfully',
                 'records' => $meditation,
-            ], 201);
+            ], 200);
         } catch (Exception $e) {
             return response()->json([
                 'error' => true,
