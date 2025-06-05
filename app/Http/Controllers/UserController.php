@@ -119,10 +119,10 @@ class UserController extends Controller
         $token = $user->createToken('SleepRoutine')->plainTextToken;
 
         return response()->json([
+            'token' => $token,
             'error' => false,
             'message' => 'Login successful',
-            'records' => $user,
-            'token' => $token
+            'records' => $user
         ]);
     }
 
