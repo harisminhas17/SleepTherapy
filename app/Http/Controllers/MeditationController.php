@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Meditation;
 use Exception;
 use Illuminate\Http\Request;
+use getID3;
 
 class MeditationController extends Controller
 {
@@ -24,6 +25,12 @@ class MeditationController extends Controller
                 ], 200);
             }
 
+            // 🔁 Format duration
+            $meditation->transform(function ($item) {
+                $item->duration = gmdate("i:s", $item->duration);
+                return $item;
+            });
+
             return response()->json([
                 'error' => false,
                 'message' => 'Meditation fetched successfully',
@@ -37,6 +44,7 @@ class MeditationController extends Controller
         }
     }
 
+
     public function addMeditation(Request $request)
     {
         try {
@@ -47,7 +55,6 @@ class MeditationController extends Controller
                 'description' => 'nullable',
                 'image' => 'required',
                 'audio' => 'required',
-                'duration' => 'nullable',
             ]);
 
             // Store image
@@ -67,6 +74,8 @@ class MeditationController extends Controller
 
             // Store audio
             $audioPath = null;
+            $durationInSeconds = null;
+
             if ($request->hasFile('audio')) {
                 $audio = $request->file('audio');
                 $audioName = time() . '_' . uniqid() . '.' . $audio->getClientOriginalExtension();
@@ -78,7 +87,18 @@ class MeditationController extends Controller
 
                 $audio->move($uploadPath, $audioName);
                 $audioPath = $audioName;
+
+                // Calculate duration using getID3
+                $audioFullPath = $uploadPath . '/' . $audioName;
+                $getID3 = new getID3();
+                $fileInfo = $getID3->analyze($audioFullPath);
+
+                if (isset($fileInfo['playtime_seconds'])) {
+                    $durationInSeconds = round($fileInfo['playtime_seconds']); // rounded seconds
+
+                }
             }
+
 
             $meditation = Meditation::create([
                 'title' => $request->title,
@@ -86,7 +106,7 @@ class MeditationController extends Controller
                 'description' => $request->description,
                 'image' => $imagePath,
                 'audio' => $audioPath,
-                'duration' => $request->duration,
+                'duration' => $durationInSeconds, // Calculated duration
             ]);
 
             return response()->json([
