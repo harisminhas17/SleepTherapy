@@ -27,7 +27,7 @@ class MeditationController extends Controller
 
             // 🔁 Format duration
             $meditation->transform(function ($item) {
-                $item->duration = gmdate("i:s", $item->duration);
+                $item->duration = gmdate("H-i-s", $item->duration);
                 return $item;
             });
 
